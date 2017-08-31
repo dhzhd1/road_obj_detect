@@ -87,7 +87,7 @@ class RoadImages(IMDB):
         self.data_name = image_set
 
     def _get_ann_file(self):
-        return os.path.join(self.data_path, 'label.idl')
+        return os.path.join(self.root_path, self.data_path, 'label.idl')
 
     def _load_image_set_index(self):
         '''in the label.idl file, the key is "file name", it treated as a index'''
