@@ -4,12 +4,12 @@ import os
 import io
 import json
 import numpy as np
-from rfcn.dataset.imdb import IMDB
+from dataset.imdb import IMDB
 
 
 
-from rfcn.utils.tictoc import tic, toc
-from rfcn.bbox.bbox_transform import clip_boxes
+from utils.tictoc import tic, toc
+from bbox.bbox_transform import clip_boxes
 import multiprocessing as mp
 
 
