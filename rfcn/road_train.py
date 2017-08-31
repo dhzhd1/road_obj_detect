@@ -7,6 +7,7 @@ import os
 import sys
 from config.config import config, update_config
 
+import _init_paths
 import shutil
 import numpy as np
 import mxnet as mx

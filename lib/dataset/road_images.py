@@ -4,7 +4,7 @@ import os
 import io
 import json
 import numpy as np
-from imdb import IMDB
+from rfcn.dataset.imdb import IMDB
 
 
 
