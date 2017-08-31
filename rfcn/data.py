@@ -154,8 +154,6 @@ if __name__ == '__main__':
     train_notation = []
     val_image_num = int(len(notation_content) * 0.2)  #26339
     for i in xrange(len(notation_content)):
-        idx = random.randint(0, len(notation_content))
-        print("random index {}".format(str(i)))
         if i < val_image_num:
             val_notation.append(notation_content[i])
             for key in notation_content[i].keys():
