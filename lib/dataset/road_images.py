@@ -87,7 +87,7 @@ class RoadImages(IMDB):
         self.data_name = image_set
 
     def _get_ann_file(self):
-        return os.path.join(self.root_path, self.data_path, 'label.idl')
+        return os.path.join(self.root_path, self.data_path, 'train_label.idl')
 
     def _load_image_set_index(self):
         '''in the label.idl file, the key is "file name", it treated as a index'''
@@ -118,14 +118,14 @@ class RoadImages(IMDB):
             print '{} gt roidb loaded from {}'.format(self.name, cache_file)
             return roidb
 
-        gt_roidb = [self._load_coco_annotation(index) for index in self.image_set_index]
+        gt_roidb = self._load_road_annotation(self.notation_list)
         with open(cache_file, 'wb') as fid:
             cPickle.dump(gt_roidb, fid, cPickle.HIGHEST_PROTOCOL)
         print 'wrote gt roidb to {}'.format(cache_file)
 
         return gt_roidb
 
-    def _load_coco_annotation(self, indices):
+    def _load_road_annotation(self, notation_list):
         """
         road_ann: [u'image_id', u'bbox', u'category_id']
         bbox:
@@ -143,8 +143,8 @@ class RoadImages(IMDB):
             for key in notation.keys():
                 file_path = self.image_path_from_index(key)
                 labels = notation[key]
-                bboxes = []
-                classes = []
+                bboxes = np.zeros((len(labels), 4), dtype=np.float32)
+                classes = np.zeros(len(labels), dtype=np.int32)
                 for i in xrange(len(labels)):
                     bboxes[i, :] = [labels[i][0], labels[i][1], labels[i][2], labels[i][3]]
                     classes[i] = labels[i][4]
