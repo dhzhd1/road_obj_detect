@@ -60,7 +60,7 @@ class RoadImages(IMDB):
         fill basic information to initialize imdb
         :param image_set: training_set, validation_set, testing_set
         :param root_path: 'data', will write 'rpn_data', 'cache'
-        :param data_path: 'data/coco'
+        :param data_path: 'data/rfcn'
         """
         super(RoadImages, self).__init__('RoadImages', image_set, root_path, data_path, result_path)
         self.root_path = root_path
@@ -87,8 +87,10 @@ class RoadImages(IMDB):
         self.data_name = image_set
 
     def _get_ann_file(self):
-        return os.path.join(self.root_path, self.data_path, 'small_label.idl')
+        # return os.path.join(self.root_path, self.data_path, 'small_label.idl')
         # return os.path.join(self.root_path, self.data_path, 'train_label.idl')
+        # return os.path.join(self.root_path, self.data_path, 'val_label.idl')
+        return os.path.join(self.root_path, self.data_path, 'all_label.idl')
 
     def _load_image_set_index(self):
         '''in the label.idl file, the key is "file name", it treated as a index'''
