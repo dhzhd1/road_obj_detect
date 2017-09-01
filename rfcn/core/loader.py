@@ -301,6 +301,7 @@ class AnchorLoader(mx.io.DataIter):
         # save parameters as properties
         self.feat_sym = feat_sym
         self.roidb = roidb
+        # print("type: {}, len:{}, content:{}".format(type(self.roidb), len(self.roidb), self.roidb))
         self.cfg = cfg
         self.batch_size = batch_size
         self.shuffle = shuffle
