@@ -229,7 +229,7 @@ class Module(BaseModule):
         return (self._arg_params, self._aux_params)
 
     def init_params(self, initializer=Uniform(0.01), arg_params=None, aux_params=None,
-                    allow_missing=False, force_init=False):
+                    allow_missing=False, force_init=False, allow_extra=False):
         """Initialize the parameters and auxiliary states.
 
         Parameters
@@ -284,9 +284,9 @@ class Module(BaseModule):
         self._params_dirty = False
 
         # copy the initialized parameters to devices
-        self._exec_group.set_params(self._arg_params, self._aux_params)
+        self._exec_group.set_params(self._arg_params, self._aux_params, allow_extra=allow_extra)
 
-    def set_params(self, arg_params, aux_params, allow_missing=False, force_init=True):
+    def set_params(self, arg_params, aux_params, allow_missing=False, force_init=True, allow_extra=False):
         """Assign parameter and aux state values.
 
         Parameters
@@ -310,7 +310,7 @@ class Module(BaseModule):
         """
         if not allow_missing:
             self.init_params(initializer=None, arg_params=arg_params, aux_params=aux_params,
-                             allow_missing=allow_missing, force_init=force_init)
+                             allow_missing=allow_missing, force_init=force_init, allow_extra=allow_extra)
             return
 
         if self.params_initialized and not force_init:
@@ -318,7 +318,7 @@ class Module(BaseModule):
                           "set_params call ignored.", stacklevel=2)
             return
 
-        self._exec_group.set_params(arg_params, aux_params)
+        self._exec_group.set_params(arg_params, aux_params, allow_extra=allow_extra)
 
         # because we didn't update self._arg_params, they are dirty now.
         self._params_dirty = True
@@ -326,7 +326,7 @@ class Module(BaseModule):
 
     def bind(self, data_shapes, label_shapes=None, for_training=True,
              inputs_need_grad=False, force_rebind=False, shared_module=None,
-             grad_req='write'):
+             grad_req='write', allow_extra=False):
         """Bind the symbols to construct executors. This is necessary before one
         can perform computation with the module.
 
@@ -393,7 +393,7 @@ class Module(BaseModule):
                                                      shared_group, logger=self.logger,
                                                      fixed_param_names=self._fixed_param_names,
                                                      grad_req=grad_req,
-                                                     state_names=self._state_names)
+                                                     state_names=self._state_names, allow_extra=allow_extra)
         # self._total_exec_bytes = self._exec_group._total_exec_bytes
         if shared_module is not None:
             self.params_initialized = True
@@ -402,7 +402,7 @@ class Module(BaseModule):
         elif self.params_initialized:
             # if the parameters are already initialized, we are re-binding
             # so automatically copy the already initialized params
-            self._exec_group.set_params(self._arg_params, self._aux_params)
+            self._exec_group.set_params(self._arg_params, self._aux_params, allow_extra=allow_extra)
         else:
             assert self._arg_params is None and self._aux_params is None
             param_arrays = [
@@ -778,17 +778,17 @@ class MutableModule(BaseModule):
         return self._curr_module.get_params()
 
     def init_params(self, initializer=Uniform(0.01), arg_params=None, aux_params=None,
-                    allow_missing=False, force_init=False):
+                    allow_missing=False, force_init=False, allow_extra=False):
         if self.params_initialized and not force_init:
             return
         assert self.binded, 'call bind before initializing the parameters'
         self._curr_module.init_params(initializer=initializer, arg_params=arg_params,
                                       aux_params=aux_params, allow_missing=allow_missing,
-                                      force_init=force_init)
+                                      force_init=force_init, allow_extra=allow_extra)
         self.params_initialized = True
 
     def bind(self, data_shapes, label_shapes=None, for_training=True,
-             inputs_need_grad=False, force_rebind=False, shared_module=None, grad_req='write'):
+             inputs_need_grad=False, force_rebind=False, shared_module=None, grad_req='write', allow_extra=False):
         # in case we already initialized params, keep it
         if self.params_initialized:
             arg_params, aux_params = self.get_params()
@@ -841,7 +841,7 @@ class MutableModule(BaseModule):
 
         # copy back saved params, if already initialized
         if self.params_initialized:
-            self.set_params(arg_params, aux_params)
+            self.set_params(arg_params, aux_params, allow_extra=allow_extra)
 
     def save_checkpoint(self, prefix, epoch, save_optimizer_states=False):
         """Save current progress to checkpoint.
@@ -877,7 +877,7 @@ class MutableModule(BaseModule):
             eval_batch_end_callback=None, initializer=Uniform(0.01),
             arg_params=None, aux_params=None, allow_missing=False,
             force_rebind=False, force_init=False, begin_epoch=0, num_epoch=None,
-            validation_metric=None, monitor=None, prefix=None):
+            validation_metric=None, monitor=None, prefix=None, allow_extra=False):
         """Train the module parameters.
 
         Parameters
@@ -941,13 +941,12 @@ class MutableModule(BaseModule):
                         num_epoch=10)
         """
         assert num_epoch is not None, 'please specify number of epochs'
-
         self.bind(data_shapes=train_data.provide_data, label_shapes=train_data.provide_label,
-                  for_training=True, force_rebind=force_rebind)
+                  for_training=True, force_rebind=force_rebind, allow_extra=False)
         if monitor is not None:
             self.install_monitor(monitor)
         self.init_params(initializer=initializer, arg_params=arg_params, aux_params=aux_params,
-                         allow_missing=allow_missing, force_init=force_init)
+                         allow_missing=allow_missing, force_init=force_init, allow_extra=allow_extra)
         self.init_optimizer(kvstore=kvstore, optimizer=optimizer,
                             optimizer_params=optimizer_params)
 
@@ -987,7 +986,7 @@ class MutableModule(BaseModule):
 
             # sync aux params across devices
             arg_params, aux_params = self.get_params()
-            self.set_params(arg_params, aux_params)
+            self.set_params(arg_params, aux_params, allow_extra=allow_extra)
 
             if epoch_end_callback is not None:
                 for callback in _as_list(epoch_end_callback):
