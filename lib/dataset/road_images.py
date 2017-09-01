@@ -87,7 +87,8 @@ class RoadImages(IMDB):
         self.data_name = image_set
 
     def _get_ann_file(self):
-        return os.path.join(self.root_path, self.data_path, 'train_label.idl')
+        return os.path.join(self.root_path, self.data_path, 'small_label.idl')
+        # return os.path.join(self.root_path, self.data_path, 'train_label.idl')
 
     def _load_image_set_index(self):
         '''in the label.idl file, the key is "file name", it treated as a index'''
@@ -147,11 +148,14 @@ class RoadImages(IMDB):
                 classes = np.zeros(len(labels), dtype=np.int32)
                 for i in xrange(len(labels)):
                     bboxes[i, :] = [labels[i][0], labels[i][1], labels[i][2], labels[i][3]]
-                    classes[i] = labels[i][4]
+                    classes[i] = 4 if labels[i][4]==20 else labels[i][4]
 
                 roi_rec.append({'image': file_path,
-                                'bboxes': bboxes,
-                                'classes': classes})
+                                'width': 640,
+                                'height': 360,
+                                'boxes': bboxes,
+                                'gt_classes': classes,
+                                'flipped': False})
         return roi_rec
 
     # def mask_path_from_index(self, index):
