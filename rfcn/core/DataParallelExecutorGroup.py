@@ -102,7 +102,7 @@ class DataParallelExecutorGroup(object):
     """
     def __init__(self, symbol, contexts, workload, data_shapes, label_shapes, param_names,
                  for_training, inputs_need_grad, shared_group=None, logger=logging,
-                 fixed_param_names=None, grad_req='write', state_names=None):
+                 fixed_param_names=None, grad_req='write', state_names=None, allow_extra=False):
         self.param_names = param_names
         self.arg_names = symbol.list_arguments()
         self.aux_names = symbol.list_auxiliary_states()
@@ -294,7 +294,7 @@ class DataParallelExecutorGroup(object):
         self._collect_arrays()
 
 
-    def set_params(self, arg_params, aux_params):
+    def set_params(self, arg_params, aux_params, allow_extra=False):
         """Assign, i.e. copy parameters to all the executors.
 
         Parameters
