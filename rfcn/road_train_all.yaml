@@ -58,16 +58,16 @@ dataset:
   proposal: rpn
 TRAIN:
   lr: 0.0005
-  lr_step: '5.333'
+  lr_step: '17.0053'
   warmup: true
   warmup_lr: 0.00005
   # typically we will use 8000 warmup step for single GPU for COCO
   warmup_step: 1000
-  begin_epoch: 0
+  begin_epoch: 17
   end_epoch: 1000
   model_prefix: 'rfcn_road'
   # whether resume training
-  RESUME: false
+  RESUME: true
   # whether flip image
   FLIP: false
   # whether shuffle image
