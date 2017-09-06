@@ -7,7 +7,7 @@ import urllib
 class PrepareRawData:
     def __init__(self):
         self.file_list = []
-        self.dataset_path = '../dataset/'
+        self.dataset_path = './data/RoadImages/'
         if not os.path.isdir(self.dataset_path):
             print("Dataset folder {} is not existing. Creating...".format(self.dataset_path))
             os.mkdir(self.dataset_path)
