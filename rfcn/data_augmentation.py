@@ -4,10 +4,9 @@ import json
 from PIL import Image, ImageOps, ImageEnhance, ImageFilter
 
 class DataAugmentation:
-    def __init__(self, notation_file, training_folder, wild_testing_folder, new_train_dataset):
+    def __init__(self, notation_file, training_folder, new_train_dataset):
         self.notation_file = notation_file
         self.training_folder = training_folder
-        self.wild_testing_folder = wild_testing_folder
         self.notation_list = []
         self.new_notation_list = []
         self.new_train_set_path = new_train_dataset
@@ -25,7 +24,7 @@ class DataAugmentation:
         self.notation_list = self.screen_bad_label(self.notation_list)
 
     def save_notations(self):
-        with open(os.path.join(self.new_train_set_path, 'new_label.idl'), 'w') as n:
+        with open(os.path.join('./data/RoadImages', 'all_label.idl'), 'w') as n:
             for item in self.new_notation_list:
                 json_str = json.dumps(item)
                 n.write(json_str + '\n')
@@ -177,20 +176,19 @@ class DataAugmentation:
 if __name__ == '__main__':
     # Create a larger dataset and save the new label notation file
 
-    new_train_dataset = '../dataset/new_train_set/'
-    train_folder = '../dataset/training/'
-    test_folder = '../dataset/testing/'
-    notation_file_name = 'label.idl'
-    new_notation_file_name = 'new_label.idl'
-    # notation_file_path = os.path.join(train_folder,notation_file_name)
-    # data = DataAugmentation(notation_file_path, train_folder, test_folder, new_train_dataset)
-    # data.load_notations()
-    # data.new_training_set()
-    # print("Total {} images in new training dataset".format(len(data.new_notation_list)))
+    new_train_dataset = './data/RoadImages/all/'
+    train_folder = './data/RoadImages/train/'
+    notation_file_name = './data/RoadImages/label.idl'
+    new_notation_file_name = 'all_label.idl'
+    notation_file_path = os.path.join(notation_file_name)
+    data = DataAugmentation(notation_file_path, train_folder, new_train_dataset)
+    data.load_notations()
+    data.new_training_set()
+    print("Total {} images in new training dataset".format(len(data.new_notation_list)))
 
 
     # validate the new notation file if it is readable and correct
-    new_notation_file_path = os.path.join(new_train_dataset, new_notation_file_name)
+    new_notation_file_path = os.path.join('./data/RoadImages', new_notation_file_name)
     new_data = DataAugmentation(new_notation_file_path, train_folder, test_folder, new_train_dataset)
     new_data.load_notations()
     print("Verify new training data notation, {} record inside!".format(len(new_data.notation_list)))
