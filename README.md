@@ -75,6 +75,10 @@ For R-FCN/Faster R-CNN\:
 the output file will be stored under ./rfcn/output
 
 3. After train stage finished, you can use the [inference.py](https://github.com/dhzhd1/road_obj_detect/blob/master/rfcn/inference.py) to do the wild testing. 
+```
+	python ./inference.py
+```
+The result will be saved under ./rfcn/results.json. It will also save a copy of testing image with the bounding boxes under ./rfcn/bbox_pic/. You can verify the results by visually. 
 
 
 ## Result
@@ -82,7 +86,8 @@ The project I was using a NVIDIA Quadro P5000 under CUDA 8.  The wild testing re
 
 Result file was in JSON format. It could be found under ./rfcn/results.json. [results.json](https://github.com/dhzhd1/road_obj_detect/blob/master/rfcn/results.json)
 
-
+## Misc
+The code from Deformable ConvNets repository will have a bug when you run a mxnet which version later then 0.9.5. I have patch the code to make it work.
 
 ## Citing Deformable ConvNets
 
