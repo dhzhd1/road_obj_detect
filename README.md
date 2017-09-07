@@ -63,19 +63,24 @@ For R-FCN/Faster R-CNN\:
 	```
 	./rfcn/model/pretrained_model/resnet_v1_101-0000.params
 	```
-3. Run the [data_augmentation.py](https://github.com/dhzhd1/road_obj_detect/blob/master/rfcn/data_augmentation.py) to make more training sample. This file will create a mirror image. For the orignial image and mirrored image, will generate 6 differnt images by adjust the brightness x2, blur x2, constract x2. 
+3. Run the [data_augmentation.py](https://github.com/dhzhd1/road_obj_detect/blob/master/rfcn/data_augmentation.py) to make more training sample. This file will create a mirror image. For the orignial image and mirrored image, will generate 6 differnt images by adjust the brightness x2, blur x2, constract x2. After augmentation, there are 131698 traing samples (remove the invalid training samples)
 
 ## Usage
 
-1. All of our experiment settings (GPU #, dataset, etc.) are kept in yaml config files at folder `./experiments/rfcn/cfgs`
-2. Eight config files have been provided so far, namely, R-FCN for COCO/VOC, Deformable R-FCN for COCO/VOC, Faster R-CNN(2fc) for COCO/VOC, Deformable Faster R-CNN(2fc) for COCO/VOC, Deeplab for Cityscapes/VOC and Deformable Deeplab for Cityscapes/VOC, respectively. We use 8 and 4 GPUs to train models on COCO and on VOC for R-FCN, respectively. For deeplab, we use 4 GPUs for all experiments.
+1. All of our experiment settings (GPU #, dataset, etc.) are kept in yaml config files at folder `./experiments/rfcn/cfgs`. You also can use the yaml file which located in the ./rfcn/road_train_all.yaml.
+2. After change the yaml configuration file properly, run the below command to start training:
+```
+	nohup python ./road_train.py --cfg road_train_all.yaml &
+```
+the output file will be stored under ./rfcn/output
 
-3. To perform experiments, run the python scripts with the corresponding config file as input. For example, to train and test deformable convnets on COCO with ResNet-v1-101, use the following command
-    ```
-    python experiments\rfcn\rfcn_end2end_train_test.py --cfg experiments\rfcn\cfgs\resnet_v1_101_coco_trainval_rfcn_dcn_end2end_ohem.yaml
-    ```
-    A cache folder would be created automatically to save the model and the log under `output/rfcn_dcn_coco/`.
-4. Please find more details in config files and in our code.
+3. After train stage finished, you can use the [inference.py](https://github.com/dhzhd1/road_obj_detect/blob/master/rfcn/inference.py) to do the wild testing. 
+
+
+## Result
+The project I was using a NVIDIA Quadro P5000 under CUDA 8.  The wild testing result is based on EPOCH 19. It took 4 days.
+
+Result file was in JSON format. It could be found under ./rfcn/results.json. [results.json](https://github.com/dhzhd1/road_obj_detect/blob/master/rfcn/results.json)
 
 
 
