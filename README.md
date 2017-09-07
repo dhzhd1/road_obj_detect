@@ -88,6 +88,8 @@ The project I was using a NVIDIA Quadro P5000 under CUDA 8.  The wild testing re
 
 Result file was in JSON format. It could be found under ./rfcn/results.json. [results.json](https://github.com/dhzhd1/road_obj_detect/blob/master/rfcn/results.json)
 
+The pre-trained model for this project could be found here [Road Obj Detector Pretrain Model](https://www.dropbox.com/sh/w4aw9d46a3xfdnf/AACF1TrMreNkmQrAu04MdmSUa?dl=0)
+
 ## Misc
 The code from Deformable ConvNets repository will have a bug when you run a mxnet which version later then 0.9.5. I have patch the code to make it work.
 
