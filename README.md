@@ -34,6 +34,8 @@ git clone https://github.com/dhzhd1/road_obj_detect.git
 	git checkout -b 62ecb60
 	git submodule update --remote --merge
 	```
+	Using latest version of mxnet is also working, since I have patch the code to void the "allow_extra" parameter errors when loading the model.
+	
 	3.2 Copy operators in `$(DCN_ROOT)/rfcn/operator_cxx` to `$(YOUR_MXNET_FOLDER)/src/operator/contrib` by
 	```
 	cp -r $(DCN_ROOT)/rfcn/operator_cxx/* $(MXNET_ROOT)/src/operator/contrib/
