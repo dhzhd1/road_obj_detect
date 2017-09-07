@@ -98,10 +98,6 @@ def main(video_file):
             frame_with_bbox = draw_bbox_on_frame(frame, dets_nms, classes, scale=scales[0])
         cv2.imshow('video', frame_with_bbox)
         print 'Processing frame in {:.4f}s'.format(toc())
-        # if count == 5:
-        #     break
-        # else:
-        #    count += 1 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
@@ -126,30 +122,6 @@ def draw_bbox_on_frame(frame, dets_nms, classes, scale=1.0):
                             0.5,
                             color)
                 print('Bbox: {}, Class: {}, Prob: {}'.format(bbox, cls_name, score))
-    return frame
-
-def draw_bbox_on_frame_2(frame, dets, classes, scale = 1.0):
-    plt.cla()
-    plt.axis("off")
-    plt.imshow(frame)
-    for cls_idx, cls_name in enumerate(classes):
-        cls_dets = dets[cls_idx]
-        for det in cls_dets:
-            bbox = det[:4] * scale
-            color = (random(), random(), random())
-            rect = plt.Rectangle((bbox[0], bbox[1]),
-                                  bbox[2] - bbox[0],
-                                  bbox[3] - bbox[1], fill=False,
-                                  edgecolor=color, linewidth=2.5)
-            plt.gca().add_patch(rect)
-
-            if cls_dets.shape[1] == 5:
-                score = det[-1]
-                plt.gca().text(bbox[0], bbox[1],
-                               '{:s} {:.3f}'.format(cls_name, score),
-                               bbox=dict(facecolor=color, alpha=0.5), fontsize=9, color='white')
-                print('Bbox: {}, Class: {}, Prob: {}'.format(bbox, cls_name, score))
-    plt.show()
     return frame
 
 
