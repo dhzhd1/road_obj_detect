@@ -44,12 +44,14 @@ def main(video_file):
 
     cap = cv2.VideoCapture(video_path)
     fps = math.floor(cap.get(5))
+    # based on testing, this code process every frame takes around 0.25s. So my interval take 0.25s ~= 7frames
     fps = 8
     while (cap.isOpened()):
         frame_id = cap.get(1)
         ret, frame = cap.read()
         if frame_id % fps != 0:
-            print('Frame ID: {}'.format(str(frame_id)))
+            # print('Frame ID: {}'.format(str(frame_id)))
+            cv2.imshow('video', frame)
             continue
         tic()
         data = []
@@ -101,7 +103,7 @@ def main(video_file):
 
             frame_with_bbox = draw_bbox_on_frame(frame, dets_nms, classes, scale=scales[0])
         cv2.imshow('video', frame_with_bbox)
-        print 'Processing frame in {:.4f}s'.format(toc())
+        print 'Processing frame {} in {:.4f}s'.format(frame_id, toc())
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
@@ -131,5 +133,5 @@ def draw_bbox_on_frame(frame, dets_nms, classes, scale=1.0):
 
 
 if __name__ == '__main__':
-    video_path = '../../video/Downtown.mp4'
+    video_path = '../../video/Highway.mp4'
     main(video_path)
