@@ -22,13 +22,13 @@ I have applied this model on two youtube videos for verify the object detecting 
 	python ./realtime_video_inference.py
 ```
 
-The real time video detecting performance is not good. Every frame takes 0.25 ~ 0.32 second. So the video is not smooth. I may need to rewrite the code or try TensorRT to make it better on inferencing later. I have put put the result video on youtube for reference. 
+The real time video detecting performance is not good. Processing every frame takes around 0.25 second. So the video is not smooth. I may need to rewrite the code or try TensorRT to make it better on inferencing later. I have put put the result video on youtube for reference. 
 
    [Downtown Video](https://www.youtube.com/watch?v=50Uf_T12OGY)
    
    [Highway Video](https://www.youtube.com/watch?v=GMtusG5tuC8&t=2s)
    
-   [Result Video](https://youtu.be/E1yphaZ0vAg)
+   [Result Video](https://youtu.be/hNaGLii4wD0)
 
 
 ## Requirements: Software
