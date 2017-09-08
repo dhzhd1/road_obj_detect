@@ -4,7 +4,7 @@ This repository used code from [MXNet rcnn example](https://github.com/dmlc/mxne
 
 
 ## Introduction
-This project's goal is based on training data to detector 4 classes of object in the road, vehicle, pedestrian, cyclist and traffic lights, by using the R-FCN under MXNet framework.
+This project's goal is based on training data to detector 4 classes of objects on the road, vehicle, pedestrian, cyclist and traffic lights, by using the R-FCN under MXNet framework.
 
 **R-FCN** is initially described in a [NIPS 2016 paper](https://arxiv.org/abs/1605.06409).
 
