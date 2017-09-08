@@ -10,7 +10,7 @@ from utils.image import resize, transform
 import numpy as np
 from random import random
 import matplotlib.pyplot as plt
-
+import math
 import glob
 import json
 
@@ -43,8 +43,14 @@ def main(video_file):
     classes = ['vehicle', 'pedestrian', 'cyclist', 'traffic lights']
 
     cap = cv2.VideoCapture(video_path)
+    fps = math.floor(cap.get(5))
+    fps = 8
     while (cap.isOpened()):
+        frame_id = cap.get(1)
         ret, frame = cap.read()
+        if frame_id % fps != 0:
+            print('Frame ID: {}'.format(str(frame_id)))
+            continue
         tic()
         data = []
         target_size = config.SCALES[0][1]
@@ -109,8 +115,9 @@ def draw_bbox_on_frame(frame, dets_nms, classes, scale=1.0):
         cls_dets = dets_nms[cls_idx]
         for det in cls_dets:
             bbox = det[:4] * scale
-            color = (random()*256, random()*256, random()*256)
-            cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 1)
+            # color = (random()*256, random()*256, random()*256)
+            color = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (127,127, 255)]
+            cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color[cls_idx], 1)
             if cls_dets.shape[1] == 5:
                 score = det[-1]
                 cv2.putText(frame,
@@ -118,11 +125,11 @@ def draw_bbox_on_frame(frame, dets_nms, classes, scale=1.0):
                             (int(bbox[0]), int(bbox[1])),
                             cv2.FONT_HERSHEY_PLAIN,
                             0.5,
-                            color)
+                            color[cls_idx])
                 # print('Bbox: {}, Class: {}, Prob: {}'.format(bbox, cls_name, score))
     return frame
 
 
 if __name__ == '__main__':
-    video_path = '../../video/Highway.mp4'
+    video_path = '../../video/Downtown.mp4'
     main(video_path)
