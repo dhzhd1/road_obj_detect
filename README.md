@@ -4,8 +4,28 @@ This repository used code from [MXNet rcnn example](https://github.com/dmlc/mxne
 
 
 ## Introduction
+This project's goal is based on training data to detector 4 classes of object in the road, vehicle, pedestrian, cyclist and traffic lights, by using the R-FCN under MXNet framework.
 
 **R-FCN** is initially described in a [NIPS 2016 paper](https://arxiv.org/abs/1605.06409).
+
+
+## Result
+The project I was using a NVIDIA Quadro P5000 under CUDA 8.  The wild testing result is based on EPOCH 19. It took 4 days.
+
+Result file was in JSON format. It could be found under ./rfcn/results.json. [results.json](https://github.com/dhzhd1/road_obj_detect/blob/master/rfcn/results.json) . I also selected 7 pictures from wild test imageset to perform the inference in an ipynb file for check out the result visually [visual_inference.ipynb](https://github.com/dhzhd1/road_obj_detect/blob/master/rfcn/visual_inference.ipynb)
+
+
+My pre-trained model for this project could be found here [Road Obj Detector Pretrain Model](https://www.dropbox.com/sh/w4aw9d46a3xfdnf/AACF1TrMreNkmQrAu04MdmSUa?dl=0)
+
+I have applied this model on two youtube videos for verify the object detecting result. I used below videos from Youtube, one is road view in downtown and another is on a highway, by using below script.
+```
+	python ./realtime_video_inference.py
+```
+
+The real time video detecting performance is not good. Every frame takes 0.25 ~ 0.8 second. So the video is not smooth. I may need to rewrite the code or try  TensorRT to make it better later. I have put also put the result video on youtube for reference. 
+   [Downtown Video]()
+   [Highway Video]()
+   [Result Video]()
 
 
 ## Requirements: Software
@@ -81,14 +101,6 @@ the output file will be stored under ./rfcn/output
 	python ./inference.py
 ```
 The result will be saved under ./rfcn/results.json. It will also save a copy of testing image with the bounding boxes under ./rfcn/bbox_pic/. You can verify the results by visually. 
-
-
-## Result
-The project I was using a NVIDIA Quadro P5000 under CUDA 8.  The wild testing result is based on EPOCH 19. It took 4 days.
-
-Result file was in JSON format. It could be found under ./rfcn/results.json. [results.json](https://github.com/dhzhd1/road_obj_detect/blob/master/rfcn/results.json)
-
-The pre-trained model for this project could be found here [Road Obj Detector Pretrain Model](https://www.dropbox.com/sh/w4aw9d46a3xfdnf/AACF1TrMreNkmQrAu04MdmSUa?dl=0)
 
 ## Misc
 The code from Deformable ConvNets repository will have a bug when you run a mxnet which version later then 0.9.5. I have patch the code to make it work.
