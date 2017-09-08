@@ -28,7 +28,6 @@ lxml==3.8.0
 MarkupSafe==1.0
 matplotlib==2.0.2
 mistune==0.7.4
-mxnet==0.11.1
 nbconvert==5.2.1
 nbformat==4.4.0
 networkx==1.11
@@ -41,7 +40,6 @@ pathlib2==2.3.0
 pexpect==4.2.1
 pickleshare==0.7.4
 Pillow==4.2.1
-pkg-resources==0.0.0
 prompt-toolkit==1.0.15
 ptyprocess==0.5.2
 pyaml==17.8.0
