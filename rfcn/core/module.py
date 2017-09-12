@@ -1030,8 +1030,11 @@ class MutableModule(BaseModule):
 
         if shape_changed:
             # self._curr_module.reshape(data_batch.provide_data, data_batch.provide_label)
+            # print('length of data batch: {}'.format(len(data_batch.provide_data)))
+            # print('context: {}'.format(self._context))
             module = Module(self._symbol, self._data_names, self._label_names,
-                            logger=self.logger, context=[self._context[i] for i in xrange(len(data_batch.provide_data))],
+            #                logger=self.logger, context=[self._context[i] for i in xrange(len(data_batch.provide_data))],
+                            logger=self.logger, context=[self._context[0]],
                             work_load_list=self._work_load_list,
                             fixed_param_names=self._fixed_param_names)
             module.bind(data_batch.provide_data, data_batch.provide_label, self._curr_module.for_training,
